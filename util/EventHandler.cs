@@ -103,7 +103,7 @@ namespace UtilPlugin
         }
         public static void OnUpgradingItem(UpgradingInventoryItemEventArgs ev)
         {
-            if (ev.KnobSetting == Scp914.Scp914KnobSetting.VeryFine && ev.Pickup.Type == ItemType.Coin)
+            if (ev.KnobSetting == Scp914.Scp914KnobSetting.VeryFine && ev.Item.Type == ItemType.Coin)
             {
                 System.Random random = new System.Random();
                 ItemType itemType = (ItemType)random.Next(1, 53);
