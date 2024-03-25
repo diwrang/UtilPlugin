@@ -44,7 +44,7 @@ namespace UtilPlugin
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundstart;
             Exiled.Events.Handlers.Scp330.InteractingScp330 += OnInteractingScp330;
             Exiled.Events.Handlers.Scp330.EatenScp330 += OnEatenScp330;
-            Exiled.Events.Handlers.Scp914.UpgradingPickup += OnUpgrading;
+            Exiled.Events.Handlers.Scp914.UpgradingPickup += OnUpgradingPickup;
             //Exiled.Events.Handlers.Warhead.Detonated += () => OmegaWarhead.ForceEnd = (Timing.RunCoroutine(OmegaWarhead.ForceEndRound()));
             Exiled.Events.Handlers.Map.Decontaminating += OnDecont;
             if (UtilPlugin.Instance.Config.MysqlEnabled)
@@ -90,17 +90,8 @@ namespace UtilPlugin
             itemType == ItemType.KeycardFacilityManager ||
             itemType == ItemType.KeycardChaosInsurgency ||
             itemType == ItemType.KeycardO5;
-        public static void OnUpgrading(UpgradingPickupEventArgs ev)
+        public static void OnUpgradingPickup(UpgradingPickupEventArgs ev)
         {
-            if (ev.KnobSetting == Scp914.Scp914KnobSetting.VeryFine && ev.Pickup.Type == ItemType.Coin)
-            {
-                System.Random random = new System.Random();
-                ItemType itemType = (ItemType)random.Next(1, 53);
-                Quaternion rolation = ev.Pickup.Rotation;
-                Player player = ev.Pickup.PreviousOwner;
-                ev.Pickup.Destroy();
-                Pickup.CreateAndSpawn(itemType, ev.OutputPosition, rolation, player);
-            }
             if (ev.KnobSetting == Scp914.Scp914KnobSetting.Rough && IsKeycard(ev.Pickup.Type))
             {
                 Quaternion rolation = ev.Pickup.Rotation;
@@ -108,6 +99,16 @@ namespace UtilPlugin
                 ev.Pickup.Destroy();
                 for (int i = 0; i < 12; i++) Pickup.CreateAndSpawn(ItemType.Coin, ev.OutputPosition, rolation, player);
                 ev.IsAllowed = false;
+            }
+        }
+        public static void OnUpgradingItem(UpgradingInventoryItemEventArgs ev)
+        {
+            if (ev.KnobSetting == Scp914.Scp914KnobSetting.VeryFine && ev.Pickup.Type == ItemType.Coin)
+            {
+                System.Random random = new System.Random();
+                ItemType itemType = (ItemType)random.Next(1, 53);
+                ev.Player.RemoveItem(ev.Item);
+                ev.Player.AddItem(itemType);
             }
         }
         public static void OnDecont(DecontaminatingEventArgs ev)
