@@ -10,7 +10,7 @@ a plugin with these functions:
 - .bc and .c
 - some other funny things
 
-#### Note: At present, this plugin has not completed the translation, someone who is proficient in Chinese and English translation can help translate it, thank you（PR to the English branch plz）
+#### Note: At present, this plugin has not completed the translation, someone who is proficient in Chinese and English translation can help translate it, thanks.（PR to the English branch plz）
 
 ## Installation
 
